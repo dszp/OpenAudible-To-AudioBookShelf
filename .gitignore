@@ -304,3 +304,15 @@ docs/_build/
 data/
 downloads/
 
+# Python virtual environment
+.venv/
+
+# Allow run.sh to be committed
+run.sh
+
+# Exclude GitHub files, specifically for AI-related agent configurations.
+# Will also exclude GitHub Actions by default, but those aren't in use here.
+*.github
+
+# Ignore books.json example file from OpenAudible
+books.json
