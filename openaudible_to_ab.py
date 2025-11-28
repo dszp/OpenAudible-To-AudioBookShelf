@@ -28,6 +28,7 @@ def process_open_audible_book_json(book_data: dict) -> dict:
         "description": book_data.get("summary", ""),
         "filename": book_data.get("filename"),
         "purchase_date": book_data.get("purchase_date"),
+        "read_status": book_data.get("read_status"),
         "series": book_data.get("series_name", ""),
         "short_title": book_data.get("title_short"),
         "title": book_data.get("title"),
@@ -114,6 +115,7 @@ def move_audio_book_files(
     purchased_how_long_ago: int,
     source_dir: str,
     libation_file_locations_path: str = "",
+    ignore_read_statuses: list[str] | None = None,
 ) -> list:
     """
     This function reads the books JSON file, processes each book, and logs the results.
@@ -156,11 +158,18 @@ def move_audio_book_files(
         target_date = (datetime.now(timezone.utc) - timedelta(days=9125)).date()
     else:
         target_date = (datetime.now(timezone.utc) - timedelta(days=purchased_how_long_ago)).date()
+    ignore_status_set = {status.lower() for status in (ignore_read_statuses or [])}
     books_to_process_in_audio_bookself = []
     for book in books:
         try:
             if download_program == "OpenAudible":
                 book_data = process_open_audible_book_json(book)
+                read_status = (book_data.get("read_status") or "").strip().lower()
+                if read_status and read_status in ignore_status_set:
+                    log_file.write(
+                        f"{datetime.now()} - INFO - Skipping {book_data['title']} due to read status '{book_data['read_status']}'\n"
+                    )
+                    continue
             else:
                 book_data = process_libation_book_json(book, file_locations)
 
@@ -285,6 +294,7 @@ def main(*args: str):
         args.purchased_how_long_ago,
         args.source_audio_book_directory,
         args.libation_file_locations_path,
+        args.ignore_read_statuses,
     )
 
     # Now that the files have been moved, we want to kick off the AudioBookShelf scanner

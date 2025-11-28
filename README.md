@@ -140,6 +140,7 @@ python openaudible_to_ab.py \
 * **--abs-api-token:** Your AudioBookShelf API token.
 * **--books-json-path:** Path to the JSON file exported from OpenAudible or Libation containing book information. (Optional for Libation - will be auto-generated if not provided or if file doesn't exist)
 * **--purchased-how-long-ago:** Number of days to look back for recently purchased books (defaults to 7).
+* **--ignore-read-statuses:** OpenAudible only. Provide one or more read status values (e.g. `Finished`, `InProgress`) to skip copying/moving those books. Accepts multiple values or comma-separated strings.
 * **--destination-book-directory:** The destination directory where you want to organize your audiobooks.
 * **--download-program:** Specify the download program - OpenAudible or Libation (defaults to OpenAudible).
 * **--audio-file-extension:** Audio file extension (defaults to .m4b).
