@@ -145,6 +145,7 @@ python openaudible_to_ab.py \
 * **--download-program:** Specify the download program - OpenAudible or Libation (defaults to OpenAudible).
 * **--audio-file-extension:** Audio file extension (defaults to .m4b).
 * **--copy-instead-of-move:** Copy files instead of moving them (useful for debugging/testing). Defaults to False.
+* **--skip-audiobookshelf-sync:** Skip triggering AudioBookShelf scans and automatic matching. Use this when the destination directory is not yet visible to AudioBookShelf (for example, if files are uploaded later).
 * **--libation-folder-cleanup:** Whether to delete the source folder in Libation directory after processing (defaults to False).
 * **--libation-file-locations-path:** Path to Libation's FileLocationsV2.json file (optional, for Libation users). When provided, the script will use the exact file paths from this file instead of constructing them. This is more reliable than the legacy path construction method.
 * **--library-id:** The ID of your library in AudioBookShelf.

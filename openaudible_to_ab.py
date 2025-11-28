@@ -297,22 +297,27 @@ def main(*args: str):
         args.ignore_read_statuses,
     )
 
-    # Now that the files have been moved, we want to kick off the AudioBookShelf scanner
-    scan_library_for_books(args.server_url, args.library_id, args.abs_api_token, log_file)
+    if not args.skip_audiobookshelf_sync:
+        # Now that the files have been moved, we want to kick off the AudioBookShelf scanner
+        scan_library_for_books(args.server_url, args.library_id, args.abs_api_token, log_file)
 
-    # We often need a back-off time in order to allow the scan to complete
-    time.sleep(15)
+        # We often need a back-off time in order to allow the scan to complete
+        time.sleep(15)
 
-    # Sometimes the scanner does not identify the books correctly
-    # In my case I buy books from audible so I want to force the match with audible content
-    books_from_audiobookshelf = get_all_books(args.server_url, args.library_id, args.abs_api_token, log_file)
-    most_recent_books = get_audio_bookshelf_recent_books(
-        books_from_audiobookshelf,
-        log_file,
-        days_ago=args.purchased_how_long_ago,
-        book_list=book_list,
-    )
-    _ = process_audio_books(most_recent_books, args.server_url, args.abs_api_token, log_file)
+        # Sometimes the scanner does not identify the books correctly
+        # In my case I buy books from audible so I want to force the match with audible content
+        books_from_audiobookshelf = get_all_books(args.server_url, args.library_id, args.abs_api_token, log_file)
+        most_recent_books = get_audio_bookshelf_recent_books(
+            books_from_audiobookshelf,
+            log_file,
+            days_ago=args.purchased_how_long_ago,
+            book_list=book_list,
+        )
+        _ = process_audio_books(most_recent_books, args.server_url, args.abs_api_token, log_file)
+    else:
+        log_file.write(
+            f"{datetime.now()} - INFO - Skipping AudioBookShelf scan and match per configuration.\n"
+        )
     log_file.close()
 
 

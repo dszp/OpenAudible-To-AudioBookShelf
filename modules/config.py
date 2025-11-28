@@ -95,6 +95,17 @@ def _get_parser() -> argparse.ArgumentParser:
     )
 
     parser.add_argument(
+        "--skip-audiobookshelf-sync",
+        dest="skip_audiobookshelf_sync",
+        default=False,
+        action="store_true",
+        help=(
+            "Skip triggering AudioBookShelf scans and matching. "
+            "Useful when the destination directory is not yet accessible to the server."
+        ),
+    )
+
+    parser.add_argument(
         "--libation-folder-cleanup",
         dest="libation_folder_cleanup",
         type=bool,
